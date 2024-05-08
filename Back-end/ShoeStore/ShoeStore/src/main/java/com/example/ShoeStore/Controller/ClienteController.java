@@ -1,5 +1,4 @@
 package com.example.ShoeStore.Controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ShoeStore.interfaceService.IClienteService;
 import com.example.ShoeStore.models.Cliente;
 
-@RequestMapping("api/v1/Cliente")
+
+@RequestMapping("api/v1/Cliente/")
 @RestController
 public class ClienteController {
-    @Autowired
+        @Autowired
     private IClienteService ClienteService;
 
     @PostMapping("/")
@@ -27,27 +27,32 @@ public class ClienteController {
         //verificar que el campo documento de identidad sea diferente vacio
         //Añadir campos obligatorios
         //no cambiar nada
-        if (Cliente.getidentificacioncliente().equals("")) {
+        if (Cliente.getIdentificacioncliente().equals("")) {
 
             return new ResponseEntity<>("El documento de identidad es un campo obligatorio", HttpStatus.BAD_REQUEST);
         }
 
-        if (Cliente.getnombrecliente().equals("")) {
+        if (Cliente.getNombrecliente().equals("")) {
             
             return new ResponseEntity<>("El primer nombre es un campo obligatorio", HttpStatus.BAD_REQUEST);
         }
 
-        if (Cliente.getapellidocliente().equals("")) {
+        if (Cliente.getApellidocliente().equals("")) {
             
             return new ResponseEntity<>("El primer apellido es un campo obligatorio", HttpStatus.BAD_REQUEST);
         }
 
-        if (Cliente.gettelefono().equals("")) {
+        if (Cliente.getCorreo().equals("")) {
+            
+            return new ResponseEntity<>("El correo es un campo obligatorio", HttpStatus.BAD_REQUEST);
+        }
+
+        if (Cliente.getTelefono().equals("")) {
             
             return new ResponseEntity<>("El numero de celular es un campo obligatorio", HttpStatus.BAD_REQUEST);
         }
 
-        if (Cliente.getestado().equals("")) {
+        if (Cliente.getEstado().equals("")) {
             
             return new ResponseEntity<>("El estado es un campo obligatorio", HttpStatus.BAD_REQUEST);
         }
@@ -65,16 +70,16 @@ public class ClienteController {
         return new ResponseEntity<>(listaCliente, HttpStatus.OK);
     }
 
-    @GetMapping("/filtrarnombrecliente/{nombrecliente}")
-    public ResponseEntity<Object> findFiltro(@PathVariable String nombrecliente) {
-        var listaCliente = ClienteService.filtrarcliente(filtro);
+    @GetMapping("/busquedafiltro/{nombrecliente}")
+    public ResponseEntity<Object> findnombreCliente(@PathVariable String nombrecliente) {
+        var listaCliente = ClienteService.filtrarnombre(nombrecliente);
         return new ResponseEntity<>(listaCliente, HttpStatus.OK);
     }
 
 
     @GetMapping("/filtrarestado/{estado}")
     public ResponseEntity<Object> findEstado(@PathVariable char estado) {
-        var listaCliente = ClienteService.filtroClienteEstado(estado);
+        var listaCliente = ClienteService.filtrarestado(estado);
         return new ResponseEntity<>(listaCliente, HttpStatus.OK);
     }
 
@@ -88,13 +93,13 @@ public class ClienteController {
     public ResponseEntity<Object> delete(@PathVariable String id) {
         var Cliente = ClienteService.findOne(id).get();
         if (Cliente != null) {
-            if (Cliente.getestado().equals("H")) {
+            if (Cliente.getEstado().equals("H")) {
 
-                Cliente.setestado("D");
+                Cliente.setEstado("D");
                 ClienteService.save(Cliente);
                 return new ResponseEntity<>("Se ha deshabilitado correctamente", HttpStatus.OK);
             } else
-                Cliente.setestado("H");
+                Cliente.setEstado("H");
                 ClienteService.save(Cliente);
             return new ResponseEntity<>("Se ha habilitado correctamente", HttpStatus.OK);
         } else {
@@ -103,26 +108,25 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable String id, @ModelAttribute("Medico") Medico MedicoUpdate) {
-        var Medico = medicoService.findOne(id).get();
-        if (Medico != null) {
+    public ResponseEntity<Object> update(@PathVariable String id, @ModelAttribute("Cliente") Cliente ClienteUpdate) {
+        var Cliente = ClienteService.findOne(id).get();
+        if (Cliente != null) {
 
-            Medico.setDocumentoIdentidad(MedicoUpdate.getDocumentoIdentidad());
-            Medico.setPrimerNombre(MedicoUpdate.getPrimerNombre());
-            Medico.setSegundoNombre(MedicoUpdate.getSegundoNombre());
-            Medico.setPrimerApellido(MedicoUpdate.getPrimerApellido());
-            Medico.setSegundoApellido(MedicoUpdate.getSegundoApellido());
-            Medico.setCelular(MedicoUpdate.getCelular());
-            Medico.setCorreo(MedicoUpdate.getCorreo());
-            Medico.setEstado(MedicoUpdate.getEstado());
+            Cliente.setIdentificacioncliente(ClienteUpdate.getIdentificacioncliente());
+            Cliente.setNombrecliente(ClienteUpdate.getNombrecliente());
+            Cliente.setApellidocliente(ClienteUpdate.getApellidocliente());
+            Cliente.setTelefono(ClienteUpdate.getTelefono());
+            Cliente.setCorreo(ClienteUpdate.getCorreo());
+            Cliente.setEstado(ClienteUpdate.getEstado());
 
-            medicoService.save(Medico);
-            return new ResponseEntity<>(Medico, HttpStatus.OK);
+            ClienteService.save(Cliente);
+            return new ResponseEntity<>(Cliente, HttpStatus.OK);
 
         } else {
-            return new ResponseEntity<>("Error Medico NO Encontrado", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Error Cliente NO Encontrado", HttpStatus.BAD_REQUEST);
         }
     }
 
-}
 
+    
+}

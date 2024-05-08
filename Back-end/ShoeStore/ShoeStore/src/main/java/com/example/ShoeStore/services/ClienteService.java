@@ -2,7 +2,6 @@ package com.example.ShoeStore.services;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +9,13 @@ import com.example.ShoeStore.interfaceService.IClienteService;
 import com.example.ShoeStore.interfaces.ICliente;
 import com.example.ShoeStore.models.Cliente;
 
+
+
+
 @Service
 public class ClienteService implements IClienteService {
 
-    @Autowired
+        @Autowired
     private ICliente data;
 
     @SuppressWarnings("null")
@@ -30,9 +32,9 @@ public class ClienteService implements IClienteService {
     }
 
     @Override
-    public List<Cliente> filtrarCliente (String nombrecliente) {
-        List<Cliente> listaMedico = data.filtrarCliente(nombrecliente);
-        return listaMedico;
+    public List<Cliente> filtrarnombre (String nombrecliente) {
+        List<Cliente> listaCliente = data.filtrarCliente(nombrecliente);
+        return listaCliente;
     }
 
     @Override
@@ -44,8 +46,15 @@ public class ClienteService implements IClienteService {
     @Override
     public Optional<Cliente> findOne(String idcliente) {
         @SuppressWarnings("null")
-        Optional<Cliente> Medico = data.findById(idcliente);
+        Optional<Cliente> Cliente = data.findById(idcliente);
         return Cliente;
     }
 
+    @Override
+    public List<Cliente> filtrarciudad(String ciudad) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'filtrarciudad'");
+    }
+
 }
+

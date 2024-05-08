@@ -1,5 +1,6 @@
 package com.example.ShoeStore.models;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Productos")
+@Entity(name = "Producto")
 
 public class Producto {
     @Id
@@ -28,7 +29,7 @@ public class Producto {
     @Column(name = "descripcion", nullable = false, length = 45)
     private String descripcion;
 
-    @Column(name = "cantidad", nullable = false, length = 50)
+    @Column(name = "cantidad", nullable = false, length = 15)
     private String cantidad;
     
     @Column(name = "precio", nullable = false, length = 13)
