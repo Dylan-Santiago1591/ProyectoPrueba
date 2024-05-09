@@ -1,4 +1,5 @@
 package com.example.ShoeStore.Controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,50 +15,47 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ShoeStore.interfaceService.IClienteService;
 import com.example.ShoeStore.models.Cliente;
 
-
 @RequestMapping("api/v1/Cliente/")
 @RestController
 public class ClienteController {
-        @Autowired
+    @Autowired
     private IClienteService ClienteService;
 
     @PostMapping("/")
-    public ResponseEntity<Object> save(@ModelAttribute("Cliente") Cliente Cliente){
-        
-        //verificar que el campo documento de identidad sea diferente vacio
-        //Añadir campos obligatorios
-        //no cambiar nada
+    public ResponseEntity<Object> save(@ModelAttribute("Cliente") Cliente Cliente) {
+
+        // verificar que el campo documento de identidad sea diferente vacio
+        // Añadir campos obligatorios
         if (Cliente.getIdentificacioncliente().equals("")) {
 
             return new ResponseEntity<>("El documento de identidad es un campo obligatorio", HttpStatus.BAD_REQUEST);
         }
 
         if (Cliente.getNombrecliente().equals("")) {
-            
+
             return new ResponseEntity<>("El primer nombre es un campo obligatorio", HttpStatus.BAD_REQUEST);
         }
 
         if (Cliente.getApellidocliente().equals("")) {
-            
+
             return new ResponseEntity<>("El primer apellido es un campo obligatorio", HttpStatus.BAD_REQUEST);
         }
 
         if (Cliente.getCorreo().equals("")) {
-            
+
             return new ResponseEntity<>("El correo es un campo obligatorio", HttpStatus.BAD_REQUEST);
         }
 
         if (Cliente.getTelefono().equals("")) {
-            
+
             return new ResponseEntity<>("El numero de celular es un campo obligatorio", HttpStatus.BAD_REQUEST);
         }
 
         if (Cliente.getEstado().equals("")) {
-            
+
             return new ResponseEntity<>("El estado es un campo obligatorio", HttpStatus.BAD_REQUEST);
         }
-        
-        
+
         // todo bien
         ClienteService.save(Cliente);
         return new ResponseEntity<>(Cliente, HttpStatus.OK);
@@ -71,15 +69,20 @@ public class ClienteController {
     }
 
     @GetMapping("/busquedafiltro/{nombrecliente}")
-    public ResponseEntity<Object> findnombreCliente(@PathVariable String nombrecliente) {
+    public ResponseEntity<Object> findnombrecliente(@PathVariable String nombrecliente) {
         var listaCliente = ClienteService.filtrarnombre(nombrecliente);
         return new ResponseEntity<>(listaCliente, HttpStatus.OK);
     }
 
-
     @GetMapping("/filtrarestado/{estado}")
-    public ResponseEntity<Object> findEstado(@PathVariable char estado) {
+    public ResponseEntity<Object> findestado(@PathVariable char estado) {
         var listaCliente = ClienteService.filtrarestado(estado);
+        return new ResponseEntity<>(listaCliente, HttpStatus.OK);
+    }
+
+    @GetMapping("/filtrarciudad/{ciudad}")
+    public ResponseEntity<Object> findciudad(@PathVariable String ciudad) {
+        var listaCliente = ClienteService.filtrarciudad(ciudad);
         return new ResponseEntity<>(listaCliente, HttpStatus.OK);
     }
 
@@ -100,11 +103,17 @@ public class ClienteController {
                 return new ResponseEntity<>("Se ha deshabilitado correctamente", HttpStatus.OK);
             } else
                 Cliente.setEstado("H");
-                ClienteService.save(Cliente);
+            ClienteService.save(Cliente);
             return new ResponseEntity<>("Se ha habilitado correctamente", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("No se ha encontrado el registro", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @DeleteMapping("/eliminarPermanente/{id}")
+    public ResponseEntity<Object> deleteForever(@PathVariable String id) {
+        ClienteService.deleteForever(id);
+        return new ResponseEntity<>("Registro eliminado Permanentemente", HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -118,7 +127,6 @@ public class ClienteController {
             Cliente.setTelefono(ClienteUpdate.getTelefono());
             Cliente.setCorreo(ClienteUpdate.getCorreo());
             Cliente.setEstado(ClienteUpdate.getEstado());
-
             ClienteService.save(Cliente);
             return new ResponseEntity<>(Cliente, HttpStatus.OK);
 
@@ -127,6 +135,4 @@ public class ClienteController {
         }
     }
 
-
-    
 }

@@ -1,6 +1,4 @@
 package com.example.ShoeStore.interfaceService;
-
-
 import java.util.List;
 import java.util.Optional;
 
@@ -15,5 +13,6 @@ public interface IClienteService {
     public List<Cliente> filtrarestado(char estado);
     public List<Cliente> filtrarciudad(String ciudad);
     public Optional<Cliente> findOne(String id);
+    public int deleteForever (String id);
 
 }

@@ -1,5 +1,4 @@
 package com.example.ShoeStore.models;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +24,7 @@ public class Cliente {
     @Column(name = "tipoidentificacion", nullable = false, length = 11)
     private String tipoidentificacion;
 
-    @Column(name = "identificacioncliente", nullable = false, length = 10)
+    @Column(name = "identificacioncliente", nullable = false, length = 13)
     private String identificacioncliente;
 
     @Column(name = "nombrecliente", nullable = false, length = 45)

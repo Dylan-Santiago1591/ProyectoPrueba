@@ -1,5 +1,4 @@
 package com.example.ShoeStore.services;
-
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +51,15 @@ public class ClienteService implements IClienteService {
 
     @Override
     public List<Cliente> filtrarciudad(String ciudad) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'filtrarciudad'");
+        List<Cliente> listaCliente = data.filtrarciudad(ciudad);
+        return listaCliente;
     }
 
-}
 
+    @SuppressWarnings("null")
+    @Override
+    public int deleteForever(String id) {
+        data.deleteById(id);
+        return 1;
+    }
+}

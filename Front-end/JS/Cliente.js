@@ -11,6 +11,179 @@
 
 
 
+function buscarClientePorFiltro(nombrecliente) {
+    if (nombrecliente === '') {
+        ListarCliente(); // Mostrar todos los cliente si estado es vacío
+    } else {
+        $.ajax({
+            url: "http://localhost:8080/api/v1/Cliente/busquedafiltro/" + nombrecliente,
+            type: "GET",
+            success: function (result) {
+                var cuerpoTabla = document.getElementById("cuerpoTabla");
+                cuerpoTabla.innerHTML = "";
+
+                for (var i = 0; i < result.length; i++) {
+                    var trRegistro = document.createElement("tr");
+                    trRegistro.innerHTML = `
+                        <td>${result[i]["idcliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["tipoidentificacion"]}</td>
+                        <td class="text-center align-middle">${result[i]["identificacioncliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["nombrecliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["apellidocliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["telefono"]}</td>
+                        <td class="text-center align-middle">${result[i]["direccion"]}</td>
+                        <td class="text-center align-middle">${result[i]["correo"]}</td>
+                        <td class="text-center align-middle">${result[i]["ciudad"]}</td>
+                        <td class="text-center align-middle">${result[i]["estado"]}</td>
+                        <td class="text-center align-middle">
+                            <i class="fas fa-edit editar"  onclick="editar" data-id="${result[i]["idcliente"]}"></i>
+                            <i class="fas fa-user-slash cambiarEstado" onclick="cambiarEstado(${result[i]["idcliente"]})" data-id="${result[i]["idcliente"]}"></i>
+                            <i class="fas fa-trash-alt eliminar" data-id="${result[i]["idcliente"]}"></i>
+                        </td>
+                    `;
+                    cuerpoTabla.appendChild(trRegistro);
+                }
+            },
+            error: function (error) {
+                alert("Error en la petición: " + error);
+            }
+        });
+    }
+
+}
+
+function buscarClientePorCiudad(ciudad) {
+    if (ciudad === '') {
+        ListarCliente(); // Mostrar todos los cliente si estado es vacío
+    } else {
+        $.ajax({
+            url: "http://localhost:8080/api/v1/Cliente/filtrarciudad/" + ciudad,
+            type: "GET",
+            success: function (result) {
+                var cuerpoTabla = document.getElementById("cuerpoTabla");
+                cuerpoTabla.innerHTML = "";
+
+                for (var i = 0; i < result.length; i++) {
+                    var trRegistro = document.createElement("tr");
+                    trRegistro.innerHTML = `
+                        <td>${result[i]["idcliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["tipoidentificacion"]}</td>
+                        <td class="text-center align-middle">${result[i]["identificacioncliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["nombrecliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["apellidocliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["telefono"]}</td>
+                        <td class="text-center align-middle">${result[i]["direccion"]}</td>
+                        <td class="text-center align-middle">${result[i]["correo"]}</td>
+                        <td class="text-center align-middle">${result[i]["ciudad"]}</td>
+                        <td class="text-center align-middle">${result[i]["estado"]}</td>
+                        <td class="text-center align-middle">
+                            <i class="fas fa-edit editar"  onclick="editar" data-id="${result[i]["idcliente"]}"></i>
+                            <i class="fas fa-user-slash cambiarEstado" onclick="cambiarEstado(${result[i]["idcliente"]})" data-id="${result[i]["idcliente"]}"></i>
+                            <i class="fas fa-trash-alt eliminar" data-id="${result[i]["idcliente"]}"></i>
+                        </td>
+                    `;
+                    cuerpoTabla.appendChild(trRegistro);
+                }
+            },
+            error: function (error) {
+                alert("Error en la petición: " + error);
+            }
+        });
+    }
+
+}
+
+
+function buscarClientePorEstado(estado) {
+    if (estado === '') {
+        ListarCliente(); // Mostrar todos los clientes si estado es vacío
+    } else if (estado === 'H') {
+        // Mostrar solo los clientes habilitados si estado es 'H'
+        $.ajax({
+            url: "http://localhost:8080/api/v1/Cliente/filtrarestado/" + estado,
+            type: "GET",
+            success: function (result) {
+                var cuerpoTabla = document.getElementById("cuerpoTabla");
+                cuerpoTabla.innerHTML = "";
+
+                for (var i = 0; i < result.length; i++) {
+                    var trRegistro = document.createElement("tr");
+                    trRegistro.innerHTML = `
+                        <td>${result[i]["idcliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["tipoidentificacion"]}</td>
+                        <td class="text-center align-middle">${result[i]["identificacioncliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["nombrecliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["apellidocliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["telefono"]}</td>
+                        <td class="text-center align-middle">${result[i]["direccion"]}</td>
+                        <td class="text-center align-middle">${result[i]["correo"]}</td>
+                        <td class="text-center align-middle">${result[i]["ciudad"]}</td>
+                        <td class="text-center align-middle">${result[i]["estado"]}</td>
+                        <td class="text-center align-middle">
+                            <i class="fas fa-edit editar"  onclick="editar" data-id="${result[i]["idcliente"]}"></i>
+                            <i class="fas fa-user-slash cambiarEstado" onclick="cambiarEstado(${result[i]["idcliente"]})" data-id="${result[i]["idcliente"]}"></i>
+                            <i class="fas fa-trash-alt eliminar" data-id="${result[i]["idcliente"]}"></i>
+                        </td>
+                    `;
+                    cuerpoTabla.appendChild(trRegistro);
+                }
+            },
+            error: function (error) {
+                alert("Error en la petición: " + error);
+            }
+        });
+    } else {
+        // Mostrar solo los cliente deshabilitados si no es vacío ni 'H'
+        $.ajax({
+            url: "http://localhost:8080/api/v1/Cliente/filtrarestado/" + estado,
+            type: "GET",
+            success: function (result) {
+                var cuerpoTabla = document.getElementById("cuerpoTabla");
+                cuerpoTabla.innerHTML = "";
+
+                for (var i = 0; i < result.length; i++) {
+                    var trRegistro = document.createElement("tr");
+                    trRegistro.innerHTML = `
+                        <td>${result[i]["idcliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["tipoidentificacion"]}</td>
+                        <td class="text-center align-middle">${result[i]["identificacioncliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["nombrecliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["apellidocliente"]}</td>
+                        <td class="text-center align-middle">${result[i]["telefono"]}</td>
+                        <td class="text-center align-middle">${result[i]["direccion"]}</td>
+                        <td class="text-center align-middle">${result[i]["correo"]}</td>
+                        <td class="text-center align-middle">${result[i]["ciudad"]}</td>
+                        <td class="text-center align-middle">${result[i]["estado"]}</td>
+                        <td class="text-center align-middle">
+                            <i class="fas fa-edit editar"  onclick="editar" data-id="${result[i]["idcliente"]}"></i>
+                            <i class="fas fa-user-slash cambiarEstado" onclick="cambiarEstado(${result[i]["idcliente"]})" data-id="${result[i]["idcliente"]}"></i>
+                            <i class="fas fa-trash-alt eliminar" data-id="${result[i]["idcliente"]}"></i>
+                        </td>
+                    `;
+                    cuerpoTabla.appendChild(trRegistro);
+                }
+            },
+            error: function (error) {
+                alert("Error en la petición: " + error);
+            }
+        });
+    }
+}
+
+
+// Espera a que el contenido de la página se haya cargado completamente
+document.addEventListener("DOMContentLoaded", function () {
+    // Obtén el elemento select de estado
+    var selectEstado = document.getElementById("estado");
+    // Establece la opción predeterminada en "Todos"
+    selectEstado.value = " ";
+});
+
+
+
+
+
+
 //VAMOS A CONECTARNOS CON EL BACK-END
 // URL de la API
 var url = "http://localhost:8080/api/v1/Cliente/";
@@ -38,7 +211,7 @@ function ListarCliente() {
                     <td class="text-center align-middle">${result[i]["ciudad"]}</td>
                     <td class="text-center align-middle">${result[i]["estado"]}</td>
                     <td class="text-center align-middle">
-                        <i class="fas fa-edit editar"  onclick="RegistrarClienteBandera=false;" data-id="${result[i]["idcliente"]}"></i>
+                        <i class="fas fa-edit editar"  onclick="editar;" data-id="${result[i]["idcliente"]}"></i>
                         <i class="fas fa-user-slash cambiarEstado" onclick="cambiarEstado(${result[i]["idcliente"]})" data-id="${result[i]["idcliente"]}"></i>
                         <i class="fas fa-trash-alt eliminar" data-id="${result[i]["idcliente"]}"></i>
                     </td>
@@ -55,11 +228,9 @@ function ListarCliente() {
 var RegistrarClienteBandera = true;
 
 
-
-
-
 // Función para registrar un Cliente
 function RegistrarCliente() {
+
     var tipoidentificacion = document.getElementById("tipoidentificacion");
     var identificacioncliente = document.getElementById("identificacioncliente");
     var nombrecliente = document.getElementById("nombrecliente");
@@ -83,7 +254,7 @@ function RegistrarCliente() {
         // Mostrar una alerta indicando que todos los campos son obligatorios
         Swal.fire({
             title: "¡Error!",
-            text: "¡Llene todos los campos correctamente!",
+            text: "¡Llene todos los campos correctamente!1",
             icon: "error"
         });
         return; // Salir de la función si algún campo está vacío
@@ -96,7 +267,7 @@ function RegistrarCliente() {
         "apellidocliente": apellidocliente.value,
         "telefono": telefono.value,
         "direccion": direccion.value,
-        "ciudad": correo.value,
+        "correo": correo.value,
         "ciudad": ciudad.value,
         "estado": estado.value,
     };
@@ -149,7 +320,7 @@ function RegistrarCliente() {
     } else {
         Swal.fire({
             title: "Error",
-            text: "¡Llene todos los campos correctamente!",
+            text: "¡Llene todos los campos correctamente!2",
             icon: "error"
         });
     }
@@ -157,27 +328,10 @@ function RegistrarCliente() {
 
 
 
-function validarcamponombretipo() {
-    var tipoidentificacion = document.getElementById("tipoidentificacion");
-    return validartipoidentificacion(tipoidentificacion);
-}
 
-function validartipoidentificacion(cuadroNumero) {
-    var valor = cuadroNumero.value;
-    var valido = true;
 
-    if (valor.length < 1 || valor.length > 11) {
-        valido = false;
-    }
 
-    if (valido) {
-        cuadroNumero.className = "form-control is-valid";
-    } else {
-        cuadroNumero.className = "form-control is-invalid";
-    }
 
-    return valido;
-}
 
 // Función para validar campos
 // Función Documento Identidad
@@ -191,7 +345,7 @@ function validaridentificacioncliente(cuadroNumero) {
     var valor = cuadroNumero.value;
     var valido = true;
 
-    if (valor.length < 5 || valor.length > 11) {
+    if (valor.length < 5 || valor.length > 13) {
         valido = false;
     }
 
@@ -205,10 +359,35 @@ function validaridentificacioncliente(cuadroNumero) {
 }
 
 
+function validarCamposnombretipo() {
+    var tipoidentificacion = document.getElementById("tipoidentificacion");
+    return validartipoidentificacion(tipoidentificacion);
+}
+
+function validartipoidentificacion(cuadroNumero) {
+    var valor = cuadroNumero.value;
+    var valido = true;
+
+    if (valor.length < 1 || valor.length > 11) {
+        valido = false;
+    }
+
+    if (valido) {
+        cuadroNumero.className = "form-select is-valid";
+    } else {
+        cuadroNumero.className = "form-select is-invalid";
+    }
+
+    return valido;
+}
+
+
+
+
 
 // Función nombrecliente
 
-function validarcamponombrecliente() {
+function validarCamposnombrecliente() {
     var primerNombre = document.getElementById("nombrecliente");
     return validarnombrecliente(nombrecliente);
 }
@@ -217,7 +396,7 @@ function validarnombrecliente(cuadroNumero) {
     var valor = cuadroNumero.value;
     var valido = true;
 
-    if (valor.length < 1 || valor.length > 11) {
+    if (valor.length < 1 || valor.length > 45) {
         valido = false;
     }
 
@@ -232,7 +411,7 @@ function validarnombrecliente(cuadroNumero) {
 
 // Función apellidocliente
 
-function validarcampoapellidocliente() {
+function validarCamposapellidocliente() {
     var apellidocliente = document.getElementById("apellidocliente");
     return validarapellidocliente(apellidocliente);
 }
@@ -241,7 +420,7 @@ function validarapellidocliente(cuadroNumero) {
     var valor = cuadroNumero.value;
     var valido = true;
 
-    if (valor.length < 1 || valor.length > 11) {
+    if (valor.length < 1 || valor.length > 45) {
         valido = false;
     }
 
@@ -256,7 +435,7 @@ function validarapellidocliente(cuadroNumero) {
 
 // Función Telefono
 
-function validarcampotelefono() {
+function validarCampostelefono() {
     var telefono = document.getElementById("telefono");
     return validartelefono(telefono);
 }
@@ -265,7 +444,7 @@ function validartelefono(cuadroNumero) {
     var valor = cuadroNumero.value;
     var valido = true;
 
-    if (valor.length < 1 || valor.length > 15) {
+    if (valor.length < 1 || valor.length > 13) {
         valido = false;
     }
 
@@ -280,7 +459,7 @@ function validartelefono(cuadroNumero) {
 
 // Función direccion
 
-function validarcampodireccion() {
+function validarCamposdireccion() {
     var direccion = document.getElementById("direccion");
     return validardireccion(direccion);
 }
@@ -289,7 +468,7 @@ function validardireccion(cuadroNumero) {
     var valor = cuadroNumero.value;
     var valido = true;
 
-    if (valor.length < 1 || valor.length > 155) {
+    if (valor.length < 1 || valor.length > 45) {
         valido = false;
     }
 
@@ -311,7 +490,7 @@ function validarcorreo(cuadroNumero) {
     var valor = cuadroNumero.value;
     var valido = true;
 
-    if (valor.length < 1 || valor.length > 15) {
+    if (valor.length < 1 || valor.length > 45) {
         valido = false;
     }
 
@@ -324,7 +503,7 @@ function validarcorreo(cuadroNumero) {
     return valido;
 }
 
-function validarCamposciuda() {
+function validarCamposciudad() {
     var ciudad = document.getElementById("ciudad");
     return validarciudad(ciudad);
 }
@@ -333,7 +512,7 @@ function validarciudad(cuadroNumero) {
     var valor = cuadroNumero.value;
     var valido = true;
 
-    if (valor.length < 1 || valor.length > 15) {
+    if (valor.length < 1 || valor.length > 45) {
         valido = false;
     }
 
@@ -356,14 +535,14 @@ function validarestado(cuadroNumero) {
     var valor = cuadroNumero.value;
     var valido = true;
 
-    if (valor.length < 1 || valor.length > 15) {
+    if (valor.length < 1 || valor.length > 2) {
         valido = false;
     }
 
     if (valido) {
-        cuadroNumero.className = "form-control is-valid";
+        cuadroNumero.className = "form-select is-valid";
     } else {
-        cuadroNumero.className = "form-control is-invalid";
+        cuadroNumero.className = "form-select is-invalid";
     }
 
     return valido;
@@ -371,123 +550,117 @@ function validarestado(cuadroNumero) {
 
 
 
-
-
 // Función para limpiar campos del formulario
-// function limpiar() {
-//     document.getElementById("documentoIdentidad").value = "";
-//     document.getElementById("documentoIdentidad").className = "form-control";
-//     document.getElementById("primerNombre").value = "";
-//     document.getElementById("primerNombre").className = "form-control";
-//     document.getElementById("segundoNombre").value = "";
-//     document.getElementById("primerApellido").value = "";
-//     document.getElementById("primerApellido").className = "form-control";
-//     document.getElementById("segundoApellido").value = "";
-//     document.getElementById("Celular").value = "";
-//     document.getElementById("Celular").className = "form-control";
-//     document.getElementById("Correo").value = "";
-//     document.getElementById("Correo").className = "form-control";
-//     document.getElementById("Estado").value = "";
-//     document.getElementById("Estado").className = "form-control";
-// }
+function limpiar() {
+    document.getElementById("tipoidentificacion").value = "";
+    document.getElementById("tipoidentificacion").className = "form-select";
+    document.getElementById("identificacioncliente").value = "";
+    document.getElementById("identificacioncliente").className = "form-control";
+    document.getElementById("nombrecliente").value = "";
+    document.getElementById("nombrecliente").className = "form-control";
+    document.getElementById("apellidocliente").value = "";
+    document.getElementById("apellidocliente").className = "form-control";
+    document.getElementById("telefono").value = "";
+    document.getElementById("telefono").className = "form-control";
+    document.getElementById("direccion").value = "";
+    document.getElementById("direccion").className = "form-control";
+    document.getElementById("correo").value = "";
+    document.getElementById("correo").className = "form-control";
+    document.getElementById("ciudad").value = "";
+    document.getElementById("ciudad").className = "form-control";
+    document.getElementById("estado").value = "";
+    document.getElementById("estado").className = "form-select";
+}
 
-// var idMedico = "";
-// // Asociar eventos de clic a los iconos dentro de la tabla
-// $(document).on("click", ".editar", function () {
-//     limpiar();
-//     idMedico = $(this).data("id");
+var idcliente = "";
+// Asociar eventos de clic a los iconos dentro de la tabla
+$(document).on("click", ".editar", function () {
+    limpiar();
+    idcliente = $(this).data("id");
 
-//     $.ajax({
-//         url: url + idMedico,
-//         type: "GET",
-//         success: function (medico) {
-//             document.getElementById("documentoIdentidad").value = medico.documentoIdentidad;
-//             document.getElementById("primerNombre").value = medico.primerNombre;
-//             document.getElementById("segundoNombre").value = medico.segundoNombre;
-//             document.getElementById("primerApellido").value = medico.primerApellido;
-//             document.getElementById("segundoApellido").value = medico.segundoApellido;
-//             document.getElementById("Celular").value = medico.celular;
-//             document.getElementById("Correo").value = medico.correo;
-//             document.getElementById("Estado").value = medico.estado;
-//             $('#exampleModal').modal('show');
-//         },
-//         error: function (error) {
-//             alert("Error al obtener los datos del médico: " + error.statusText);
-//         }
-//     });
-// });
+    $.ajax({
+        url: url + idcliente,
+        type: "GET",
+        success: function (Cliente) {
+            document.getElementById("tipoidentificacion").value = Cliente.tipoidentificacion;
+            document.getElementById("identificacioncliente").value = Cliente.identificacioncliente;
+            document.getElementById("nombrecliente").value = Cliente.nombrecliente;
+            document.getElementById("apellidocliente").value = Cliente.apellidocliente;
+            document.getElementById("telefono").value = Cliente.telefono;
+            document.getElementById("direccion").value = Cliente.direccion;
+            document.getElementById("correo").value = Cliente.correo;
+            document.getElementById("ciudad").value = Cliente.ciudad;
+            document.getElementById("estado").value = Cliente.estado;
+            $('#exampleModal').modal('show');
+        },
+        error: function (error) {
+            alert("Error al obtener los datos del cliente: " + error.statusText);
+        }
+    });
+});
 
-// $(document).on("click", ".cambiarEstado", function () {
-//     var idMedico = $(this).data("id");
-//     $.ajax({
-//         url: url + idMedico,
-//         type: "DELETE",
-//         success: function () {
-//             Swal.fire({
-//                 position: "top-end",
-//                 icon: "success",
-//                 title: "Cambio de estado exitoso",
-//                 showConfirmButton: false,
-//                 timer: 1500
-//             });
-//             listarMedico(); // Actualiza la lista de pacientes en el front-end
-//         }
-//     });
-// });
-
-
-
-// $(document).on("click", ".eliminar", function () {
-//     // Obtener el ID del médico desde el atributo data del elemento clicado
-//     var idMedico = $(this).data("id");
-
-//     // Mostrar un cuadro de diálogo para confirmar la eliminación
-//     Swal.fire({
-//         title: '¿Estás seguro?',
-//         text: "¿Deseas eliminar este medico?",
-//         icon: 'warning',
-//         showCancelButton: true,
-//         confirmButtonColor: '#3085d6',
-//         cancelButtonColor: '#d33',
-//         confirmButtonText: 'Eliminar'
-//     }).then((result) => {
-//         // Si el usuario confirma la eliminación, proceder con la solicitud AJAX
-//         if (result.isConfirmed) {
-//             $.ajax({
-//                 url: url + "eliminarPermanente/" + idMedico,
-//                 type: "DELETE",
-//                 success: function (eliminarPermanente) {
-//                     // Mostrar un mensaje de éxito
-//                     Swal.fire({
-//                         position: "top-end",
-//                         icon: "success",
-//                         title: "Registro Eliminado",
-//                         showConfirmButton: false,
-//                         timer: 1500
-//                     });
-//                     // Actualizar la lista de médicos después de eliminar
-//                     listarMedico();
-//                 },
-//                 error: function (xhr, status, error) {
-//                     // Manejo de errores
-//                     Swal.fire({
-//                         icon: 'error',
-//                         title: 'Error',
-//                         text: 'El registro tiene un ingreso.'
-//                     });
-//                 }
-//             });
-//         }
-//     });
-// });
+$(document).on("click", ".cambiarEstado", function () {
+    var idcliente = $(this).data("id");
+    $.ajax({
+        url: url + idcliente,
+        type: "DELETE",
+        success: function () {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Cambio de estado exitoso",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            ListarCliente(); // Actualiza la lista de cliente en el front-end
+        }
+    });
+});
 
 
 
+$(document).on("click", ".eliminar", function () {
+    // Obtener el ID del cliente desde el atributo data del elemento clicado
+    var idcliente = $(this).data("id");
 
-// // Llamar a la función para listar médicos al cargar la página
-// $(document).ready(function () {
-//     listarMedico();
-// });
-// function actualizarlistarMedico() {
-//     listarMedico();
-// }
+    // Mostrar un cuadro de diálogo para confirmar la eliminación
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¿Deseas eliminar este cliente?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar'
+    }).then((result) => {
+        // Si el usuario confirma la eliminación, proceder con la solicitud AJAX
+        if (result.isConfirmed) {
+            $.ajax({
+                url: url + "eliminarPermanente/" + idcliente,
+                type: "DELETE",
+                success: function (eliminarPermanente) {
+                    // Mostrar un mensaje de éxito
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Registro Eliminado",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    // Actualizar la lista de cliente después de eliminar
+                    ListarCliente();
+                },
+                error: function (xhr, status, error) {
+                    // Manejo de errores
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'El registro tiene un ingreso.'
+                    });
+                }
+            });
+        }
+    });
+});
+
+
